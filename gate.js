@@ -21,7 +21,7 @@
   function show() {
     var g = document.createElement("div");
     g.id = "gate";
-    g.innerHTML = '<form><div class="t">Greta Garbo</div><div class="s">Cara Stricker</div>' +
+    g.innerHTML = '<form><div class="t">Greta Garbo</div>' +
       '<input type="password" autocomplete="current-password" placeholder="Password" aria-label="Password">' +
       '<button type="submit">Enter</button><div class="e"></div></form>';
     document.body.appendChild(g);
