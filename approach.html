@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Garbo &middot; Approach</title>
+<meta name="theme-color" content="#0a0a0b">
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  /* The creative board's ground and type, set as a reading page: one two-column
+     grid runs the whole way down, words on the left, pictures on the right, so
+     every description sits level with the images it describes. */
+  :root{
+    --ink:#0a0a0b;
+    --paper:#eae7e1;
+    --dim:rgba(234,231,225,.56);
+    --faint:rgba(234,231,225,.28);
+    --hair:rgba(234,231,225,.13);
+    --plate:#141417;
+    --gap:6px;
+    --pad:clamp(16px,4vw,56px);
+    --left:clamp(230px,24vw,340px);
+    --gutter:clamp(22px,2.6vw,44px);
+    --serif:"Cormorant Garamond",Didot,"Times New Roman",serif;
+    --sans:"Inter",-apple-system,BlinkMacSystemFont,"Helvetica Neue",sans-serif;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+  body{
+    margin:0;color:var(--paper);background:var(--ink);
+    overflow-x:hidden;-webkit-tap-highlight-color:transparent;
+    font-family:var(--sans);font-size:15px;line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+  }
+  ::selection{background:rgba(234,231,225,.16)}
+  button{font:inherit;color:inherit;text-transform:inherit;letter-spacing:inherit;background:none;border:0;padding:0;cursor:pointer}
+  .label{
+    font-size:9.5px;font-weight:500;letter-spacing:.26em;
+    text-transform:uppercase;color:var(--dim);
+  }
+  a.label{text-decoration:none;transition:color .3s}
+  a.label:hover{color:var(--paper)}
+  body::before{content:"";position:fixed;inset:-50%;z-index:90;pointer-events:none;opacity:.07;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    animation:grain 1.2s steps(6) infinite}
+  body::after{content:"";position:fixed;inset:0;z-index:89;pointer-events:none;background:radial-gradient(ellipse at 50% 45%,transparent 62%,rgba(0,0,0,.38) 100%)}
+  @keyframes grain{0%{transform:translate(0,0)}20%{transform:translate(-3%,2%)}40%{transform:translate(2%,-3%)}60%{transform:translate(-2%,-1%)}80%{transform:translate(3%,3%)}100%{transform:translate(0,0)}}
+  @media (prefers-reduced-motion:reduce){ body::before{animation:none} }
+
+  /* ---------- editable text: quiet until touched ---------- */
+  [contenteditable]{white-space:pre-wrap;outline:none;border-radius:2px;transition:background-color .25s,box-shadow .25s;cursor:text}
+  [contenteditable]:hover{box-shadow:0 0 0 6px rgba(234,231,225,.035);background:rgba(234,231,225,.035)}
+  [contenteditable]:focus{box-shadow:0 0 0 6px rgba(234,231,225,.06);background:rgba(234,231,225,.06)}
+  [contenteditable]:empty::before{content:attr(data-ph);color:var(--faint);font-style:italic}
+
+  /* ---------- masthead ---------- */
+  .cover{padding:clamp(18px,3vh,28px) var(--pad) 0}
+  .topline{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+  .intro{display:grid;grid-template-columns:var(--left) 1fr;gap:var(--gutter);padding:clamp(28px,5vh,52px) 0 clamp(22px,4vh,36px);align-items:end}
+  .intro h1{margin:0;font:500 clamp(17px,1.4vw,21px)/1.25 var(--sans);letter-spacing:.26em;text-transform:uppercase}
+  .intro p{margin:0;max-width:40em;font:400 clamp(16px,1.2vw,18px)/1.45 var(--serif);color:var(--dim)}
+
+  /* ---------- controls ---------- */
+  .controls{
+    position:sticky;top:0;z-index:40;
+    display:flex;align-items:center;gap:26px;flex-wrap:wrap;
+    padding:14px var(--pad);
+    background:rgba(10,10,11,.84);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);
+    border-top:1px solid var(--hair);border-bottom:1px solid var(--hair);
+  }
+  .group{display:flex;align-items:baseline;gap:18px}
+  .controls button{transition:color .3s}
+  .controls button:hover,.controls button.on{color:var(--paper)}
+  .controls button:disabled{opacity:.3;cursor:default}
+  .controls .jump .n{color:var(--faint);margin-left:6px;letter-spacing:.1em;text-transform:none;font-size:10px}
+  .sep{width:1px;height:12px;background:var(--hair);align-self:center}
+  .spacer{flex:1}
+  kbd{font:inherit;color:var(--faint);margin-left:6px}
+
+  /* ---------- the page ---------- */
+  main{padding:0 var(--pad) 120px}
+  /* the strong rule marks a new scene; everything inside it is hairlines */
+  .scene{margin-top:clamp(44px,7vh,72px);border-top:2px solid var(--paper);padding-top:18px;scroll-margin-top:60px}
+  .scene:first-child{margin-top:28px}
+  .grid{display:grid;grid-template-columns:var(--left) minmax(0,1fr);gap:var(--gutter)}
+
+  .scene-head{padding-bottom:14px;align-items:start}
+  .snum,.stitle{display:inline;margin:0;font:500 clamp(13px,1vw,15px)/1.4 var(--sans);letter-spacing:.24em;text-transform:uppercase;white-space:nowrap}
+  .stitle{margin-left:16px!important}
+  .snum::before{content:"S"}
+  .stitle{margin-left:12px;white-space:normal}
+  .scene-head .label{margin-bottom:6px}
+  .note{margin:0;max-width:62em;font-size:14px;line-height:1.7;color:rgba(234,231,225,.8)}
+  .note-wrap{padding-top:21px}
+  .setline{border-top:1px solid var(--hair);padding:10px 0 10px;align-items:baseline}
+  .setlabel{color:var(--dim)}
+  .set{color:var(--paper);margin-left:12px}
+  .setnote{color:var(--paper);display:block;line-height:1.8}
+
+  .shot{border-top:1px solid var(--hair);padding:12px 0 14px}
+  .shot-text{position:sticky;top:60px;align-self:start}
+  .idx{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:5px}
+  .shot h3{margin:0 0 6px;font:500 10.5px/1.6 var(--sans);letter-spacing:.22em;text-transform:uppercase}
+  .shot p{margin:0;font-size:12.5px;line-height:1.65;color:rgba(234,231,225,.64);max-width:34em}
+  .pick{margin-left:12px;padding:3px 8px 2px;border:1px solid var(--paper);border-radius:999px;color:var(--paper);letter-spacing:.22em}
+  .idx>span:first-child{white-space:nowrap}
+  .shot.picked h3{color:#fff}
+  .shot.refs h3{color:var(--dim)}
+  .add{margin-top:8px;display:flex;flex-wrap:wrap;gap:6px 16px;opacity:0;transition:opacity .25s}
+  .shot:hover .add,.shot:focus-within .add{opacity:1}
+  .add button,.idx button{transition:color .3s}
+  .add button:hover,.idx button:hover{color:var(--paper)}
+  .idx button{opacity:0;transition:opacity .25s,color .3s}
+  .shot:hover .idx button{opacity:1}
+  .addrow{border-top:1px solid var(--hair);padding:12px 0}
+  .addrow button{color:var(--paper);justify-self:start;transition:opacity .3s}
+  .addrow button:hover{opacity:.6}
+  .addshot{display:block;padding:6px 0}
+  .addshot:hover{color:var(--paper)}
+  @media (hover:none){ .add,.idx button{opacity:1} }
+
+  /* ---------- trays: justified rows, flush to both edges ---------- */
+  .tray{position:relative;min-height:60px;align-self:start;display:flex;flex-wrap:wrap;gap:var(--gap);align-content:flex-start;transition:background-color .2s}
+  .tray.empty{min-height:56px;border:1px dashed rgba(234,231,225,.16);display:grid;place-items:center;text-align:center;padding:10px}
+  .tray.empty .hint{line-height:1.9!important}
+  .tray.empty .hint{color:var(--faint);line-height:2}
+  .tray.empty .hint button{color:var(--dim);text-decoration:underline;text-underline-offset:3px}
+  .tray.empty .hint button:hover{color:var(--paper)}
+  .tray.over{background:rgba(234,231,225,.04)}
+  .tray.empty.over{border-color:rgba(234,231,225,.5)}
+
+  .tile{position:relative;flex:none;background:var(--plate);overflow:hidden;cursor:zoom-in;user-select:none;-webkit-user-select:none}
+  .tile img,.tile video{display:block;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .7s cubic-bezier(.2,.6,.2,1);pointer-events:none}
+  .tile .in{opacity:1}
+  .tile::after{content:"";position:absolute;inset:0;pointer-events:none;outline:1px solid transparent;outline-offset:-1px;transition:outline-color .3s}
+  @media (hover:hover){ .tile:hover::after{outline-color:rgba(234,231,225,.34)} }
+  .tile.dragging{opacity:.25}
+  .tile.landed::after{animation:flash 1.6s ease}
+  @keyframes flash{0%,40%{outline:2px solid var(--paper);outline-offset:-2px}100%{outline-color:transparent}}
+  .tools{position:absolute;left:0;right:0;top:0;display:flex;justify-content:flex-end;padding:8px;opacity:0;transition:opacity .25s;background:linear-gradient(rgba(0,0,0,.5),transparent)}
+  .tile:hover .tools{opacity:1}
+  .act{font-size:9px;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:rgba(234,231,225,.8);padding:2px 0}
+  .act:hover{color:#fff}
+  @media (hover:none){ .tools{opacity:1;background:none} }
+  #caret{position:fixed;width:2px;background:var(--paper);pointer-events:none;z-index:30;display:none;box-shadow:0 0 12px rgba(234,231,225,.5)}
+
+  /* ---------- drawer: the board and the pulls, to drag from ---------- */
+  #drawer{
+    position:fixed;top:0;right:0;bottom:0;width:min(400px,92vw);z-index:70;
+    background:rgba(16,16,18,.97);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);
+    border-left:1px solid var(--hair);transform:translateX(102%);transition:transform .4s cubic-bezier(.2,.8,.2,1);
+    display:flex;flex-direction:column;
+  }
+  #drawer.on{transform:none}
+  .dhead{padding:18px 20px 14px;border-bottom:1px solid var(--hair)}
+  .dtop{display:flex;justify-content:space-between;align-items:baseline}
+  .dtabs{display:flex;gap:18px;margin-top:16px;flex-wrap:wrap}
+  .dtabs button.on,.dtop button:hover,.dtabs button:hover{color:var(--paper)}
+  .dtarget{margin-top:14px;font:400 italic 17px/1.3 var(--serif);color:var(--paper);min-height:1.3em}
+  .dtarget .label{display:block;font-style:normal;margin-bottom:4px}
+  .dbody{flex:1;overflow-y:auto;padding:14px 20px 40px}
+  .dbody h4{margin:22px 0 10px;font-weight:500}
+  .dbody h4:first-child{margin-top:4px}
+  .thumbs{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+  .thumb{position:relative;aspect-ratio:1;background:var(--plate);overflow:hidden;cursor:grab}
+  .thumb img,.thumb video{width:100%;height:100%;object-fit:cover;display:block;pointer-events:none}
+  .thumb.used::before{content:"";position:absolute;right:6px;bottom:6px;width:5px;height:5px;border-radius:50%;background:var(--paper);box-shadow:0 0 4px rgba(0,0,0,.6);z-index:1}
+  .thumb::after{content:"";position:absolute;inset:0;outline:1px solid transparent;outline-offset:-1px;transition:outline-color .25s}
+  .thumb:hover::after{outline-color:rgba(234,231,225,.45)}
+  .thumb.added::after{animation:flash 1.2s ease}
+  .dfoot{padding:12px 20px;border-top:1px solid var(--hair);color:var(--faint)}
+
+  /* ---------- toast & viewer ---------- */
+  #toast{
+    position:fixed;left:50%;bottom:22px;transform:translate(-50%,calc(100% + 40px));z-index:80;
+    display:flex;gap:18px;align-items:center;padding:12px 20px;
+    background:var(--paper);color:var(--ink);border-radius:999px;transition:transform .35s cubic-bezier(.2,.8,.2,1);
+  }
+  #toast.on{transform:translate(-50%,0)}
+  #toast .label{color:var(--ink)}
+  #toast button{text-decoration:underline;text-underline-offset:3px}
+  #lb{position:fixed;inset:0;z-index:100;background:rgba(6,6,7,.975);display:none;place-items:center}
+  #lb.on{display:grid}
+  #lb img,#lb video{max-width:88vw;max-height:78vh;object-fit:contain}
+  #lb .foot{position:fixed;left:0;right:0;bottom:22px;display:flex;justify-content:center;gap:26px;align-items:baseline;padding:0 20px;flex-wrap:wrap}
+  #lb .cap{position:fixed;left:0;right:0;top:22px;text-align:center;font:400 italic 19px/1.3 var(--serif);color:var(--dim);padding:0 120px}
+  #lb .fname{color:var(--faint);max-width:40vw;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  #lb .x{position:fixed;top:20px;right:max(20px,4vw);padding:8px}
+  #lb .x:hover{color:var(--paper)}
+  #lb .nav{position:fixed;top:60px;bottom:70px;width:24vw}
+  #lb .nav.p{left:0;cursor:w-resize}
+  #lb .nav.n{right:0;cursor:e-resize}
+
+  @media (max-width:820px){
+    :root{--gap:6px}
+    .grid,.intro{grid-template-columns:1fr;gap:18px}
+    .shot-text{position:static}
+    .note-wrap{padding-top:0}
+    .controls{gap:14px 18px}
+    .spacer{display:none}
+    kbd{display:none}
+    #lb .cap{padding:0 70px 0 20px;text-align:left}
+  }
+  @media (prefers-reduced-motion:reduce){ html{scroll-behavior:auto} .tile img,.tile video{opacity:1;transition:none} }
+
+  /* ---------- the public copy: view only ---------- */
+  html.view #openDrawer,html.view #undo,html.view #exportBtn,html.view label:has(#importIn),html.view #reset,
+  html.view #diskState,html.view .add,html.view .addrow,html.view .addshot,html.view #drawer,html.view .tools,
+  html.view .tray.empty,html.view .shot.refs.none{display:none!important}
+  html.view [contenteditable]{cursor:auto}
+
+  /* ---------- print: one scene to a sheet, the ground kept ---------- */
+  @page{size:A3 landscape;margin:12mm}
+  @media print{
+    html,body{background:var(--ink)!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    body::before,body::after,.controls,.add,.idx button,.addshot,.addrow,.tools,#drawer,#toast,#lb,#caret{display:none!important}
+    main{padding:0}
+    .scene{break-before:page;padding-top:0}
+    .intro{padding:40mm 0 0}
+    .shot{break-inside:avoid}
+    .shot-text{position:static}
+    .tray.empty{display:none}
+    .tile{width:auto!important;height:52mm!important}
+    [contenteditable]{background:none!important;box-shadow:none!important}
+    .tile img,.tile video{opacity:1!important}
+  }
+</style>
+</head>
+<body>
+
+<header class="cover">
+  <div class="topline">
+    <span class="label">Greta Garbo &nbsp;·&nbsp; Approach &nbsp;·&nbsp; Cara Stricker</span>
+    <span class="label"><a class="label" href="index.html">← Creative board</a></span>
+  </div>
+  <div class="intro">
+    <h1 id="title" contenteditable="plaintext-only" spellcheck="false" data-ph="Title"></h1>
+    <p id="intro" contenteditable="plaintext-only" data-ph="A line on the approach"></p>
+  </div>
+</header>
+
+<nav class="controls label" id="controls">
+  <div class="group" id="jumps"></div>
+  <span class="spacer"></span>
+  <div class="group">
+    <span id="diskState" style="color:var(--faint)"></span>
+        <button id="openDrawer">Board images</button>
+    <button id="undo" disabled>Undo<kbd>⌘Z</kbd></button>
+    <button id="exportBtn">Save</button>
+    <label style="cursor:pointer" class="label"><span>Load</span><input type="file" id="importIn" accept=".json" hidden></label>
+    <button id="pdf">PDF</button>
+    <button id="reset">Reset</button>
+  </div>
+</nav>
+
+<main id="page"></main>
+<div id="caret"></div>
+<input type="file" id="fileIn" accept="image/*,video/*" multiple hidden>
+
+<aside id="drawer" aria-label="Images to add">
+  <div class="dhead">
+    <div class="dtop"><span class="label" style="color:var(--paper)">Add images</span><button class="label" id="closeDrawer">Close<kbd>esc</kbd></button></div>
+    <div class="dtabs label" id="dtabs"></div>
+    <div class="dtarget" id="dtarget"></div>
+  </div>
+  <div class="dbody" id="dbody"></div>
+  <div class="dfoot label" id="dfoot">Drag onto any shot · or click to add</div>
+</aside>
+
+<div id="toast"><span class="label" id="toastMsg"></span><button class="label" id="toastUndo">Undo</button></div>
+
+<div id="lb" role="dialog" aria-modal="true" aria-label="Plate viewer">
+  <button class="nav p" aria-label="Previous"></button>
+  <img alt="">
+  <video muted loop playsinline autoplay hidden></video>
+  <button class="nav n" aria-label="Next"></button>
+  <div class="cap" id="lbc"></div>
+  <button class="x label" aria-label="Close">Close<kbd>esc</kbd></button>
+  <div class="foot label">
+    <span id="lbn"></span>
+    <span class="fname" id="lbf"></span>
+  </div>
+</div>
+
+<script src="view.js"></script>
+<script>if (window.GARBO_VIEW) document.documentElement.classList.add("view");</script>
+<script src="items.js"></script>
+<script src="approach-plates.js"></script>
+<script src="approach-scenes.js"></script>
+<script src="approach.js"></script>
+</body>
+</html>

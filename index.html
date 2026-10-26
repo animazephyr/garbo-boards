@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Garbo &middot; Creative Board</title>
+<meta name="theme-color" content="#0a0a0b">
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  /* The Common Hours ground and type. The grid is new: every row is justified
+     flush to both edges at one shared height, so the board reads as a block. */
+  :root{
+    --ink:#0a0a0b;
+    --paper:#eae7e1;
+    --dim:rgba(234,231,225,.46);
+    --faint:rgba(234,231,225,.24);
+    --hair:rgba(234,231,225,.13);
+    --plate:#141417;
+    --gap:10px;
+    --pad:clamp(16px,4vw,56px);
+    --serif:"Cormorant Garamond",Didot,"Times New Roman",serif;
+    --sans:"Inter",-apple-system,BlinkMacSystemFont,"Helvetica Neue",sans-serif;
+    --tint:#0a0a0b;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0;color:var(--paper);
+    background:color-mix(in oklab, var(--ink) 91%, var(--tint));
+    transition:background-color 2.4s ease;
+    overflow-x:hidden;-webkit-tap-highlight-color:transparent;
+    font-family:var(--sans);font-size:15px;line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+  }
+  ::selection{background:rgba(234,231,225,.16)}
+  button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
+  .label{
+    font-size:9.5px;font-weight:500;letter-spacing:.26em;
+    text-transform:uppercase;color:var(--dim);
+  }
+  a.label{text-decoration:none;transition:color .3s}
+  a.label:hover{color:var(--paper)}
+
+  #bar{position:fixed;top:0;left:0;height:1px;background:var(--paper);width:0;z-index:80;opacity:.5}
+
+  /* ---------- masthead ---------- */
+  .cover{padding:clamp(18px,3vh,28px) var(--pad) 16px}
+  .topline{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+  /* film grain + vignette over everything, never in the way */
+  body::before{content:"";position:fixed;inset:-50%;z-index:90;pointer-events:none;opacity:.07;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    animation:grain 1.2s steps(6) infinite}
+  body::after{content:"";position:fixed;inset:0;z-index:89;pointer-events:none;background:radial-gradient(ellipse at 50% 45%,transparent 62%,rgba(0,0,0,.38) 100%)}
+  @keyframes grain{0%{transform:translate(0,0)}20%{transform:translate(-3%,2%)}40%{transform:translate(2%,-3%)}60%{transform:translate(-2%,-1%)}80%{transform:translate(3%,3%)}100%{transform:translate(0,0)}}
+  @media (prefers-reduced-motion:reduce){ body::before{animation:none} }
+
+  /* ---------- controls: sticky, one line, all in the label type ---------- */
+  .controls{
+    position:sticky;top:0;z-index:40;
+    display:flex;align-items:center;gap:26px;flex-wrap:wrap;
+    padding:14px var(--pad);
+    background:color-mix(in oklab, rgba(10,10,11,.84) 90%, var(--tint));-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);
+    transition:background-color 2.4s ease;
+    border-top:1px solid var(--hair);border-bottom:1px solid var(--hair);
+  }
+  .group{display:flex;align-items:baseline;gap:16px}
+  .controls button{transition:color .3s}
+  .controls button:hover{color:var(--paper)}
+  .controls button.on{color:var(--paper)}
+  .tab .n{color:var(--faint);margin-left:6px;letter-spacing:.1em}
+  .tab.on .n{color:var(--dim)}
+  .sep{width:1px;height:12px;background:var(--hair);align-self:center}
+  .spacer{flex:1}
+  .strip{flex-basis:100%;display:flex;height:9px;position:relative;cursor:pointer;margin-top:-2px}
+  .strip i{flex:1 1 0;min-width:0;transition:transform .2s}
+  .strip i:hover{transform:scaleY(1.9)}
+  #stripWin{position:absolute;top:-4px;bottom:-4px;border:1px solid var(--paper);pointer-events:none;transition:left .15s,width .15s;display:none}
+  .tile.flash::after{animation:flash 1.4s ease}
+  @keyframes flash{0%,40%{outline:2px solid var(--paper);outline-offset:-2px}100%{outline-color:transparent}}
+  .controls button:disabled{opacity:.3;cursor:default}
+
+  /* ---------- board ---------- */
+  main{padding:22px var(--pad) 120px}
+  #board{position:relative}
+  .row{display:flex;gap:var(--gap);margin-bottom:var(--gap)}
+  .cells{display:grid;gap:var(--gap);grid-template-columns:repeat(auto-fill,minmax(var(--cell),1fr))}
+  .cells .tile{aspect-ratio:4/5}
+
+  .tile{position:relative;flex:none;background:var(--plate);overflow:hidden;cursor:zoom-in;user-select:none;-webkit-user-select:none}
+  .tile img,.tile video{display:block;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .7s cubic-bezier(.2,.6,.2,1)}
+  .tile .in{opacity:1}
+  .tile::after{content:"";position:absolute;inset:0;pointer-events:none;outline:1px solid transparent;outline-offset:-1px;transition:outline-color .3s}
+  @media (hover:hover){ .tile:hover::after{outline-color:rgba(234,231,225,.34)} }
+  .tile.sel::after{outline:2px solid var(--paper);outline-offset:-2px}
+  .tile.sel img,.tile.sel video{opacity:.72}
+  .tile.dragging{opacity:.25}
+
+  /* tools sit on the plate, out of the way until hovered */
+  .tools{
+    position:absolute;left:0;right:0;top:0;display:flex;justify-content:space-between;align-items:flex-start;
+    padding:8px;opacity:0;transition:opacity .25s;
+    background:linear-gradient(rgba(0,0,0,.5),transparent);
+  }
+  .tile:hover .tools,.tile.sel .tools{opacity:1}
+  .chk{width:17px;height:17px;border:1px solid rgba(234,231,225,.7);border-radius:50%;display:grid;place-items:center}
+  .tile.sel .chk{background:var(--paper);border-color:var(--paper)}
+  .tile.sel .chk::before{content:"";width:7px;height:4px;border:1.5px solid var(--ink);border-top:0;border-right:0;transform:translate(0,-1px) rotate(-45deg)}
+  .act{font-size:9px;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:rgba(234,231,225,.8);padding:2px 0}
+  .act:hover{color:#fff}
+  .acts{display:flex;gap:13px;align-items:flex-start}
+  /* the plate lands where it was sent, and says so for a moment */
+  .tile.landed::after{animation:flash 1.6s ease}
+  .num{position:absolute;left:8px;bottom:6px;font-size:9px;letter-spacing:.14em;color:rgba(234,231,225,.75);text-shadow:0 0 6px rgba(0,0,0,.6);pointer-events:none;opacity:0;transition:opacity .25s}
+  .tile:hover .num{opacity:1}
+  .moving{position:absolute;right:8px;bottom:7px;width:5px;height:5px;border-radius:50%;background:rgba(234,231,225,.7);pointer-events:none}
+  @media (hover:none){ .tools{opacity:1;background:none} }
+
+  #drop{position:fixed;width:2px;background:var(--paper);pointer-events:none;z-index:30;display:none;box-shadow:0 0 12px rgba(234,231,225,.5)}
+
+  .quiet{padding:18vh 0 30vh;text-align:center}
+  .quiet .big{font:300 italic 34px/1.2 var(--serif);color:var(--dim);margin-bottom:10px;text-transform:none;letter-spacing:0}
+
+  /* ---------- selection bar ---------- */
+  #selbar{
+    position:fixed;left:50%;bottom:22px;transform:translate(-50%,140%);z-index:60;
+    display:flex;gap:22px;align-items:center;padding:13px 22px;
+    background:rgba(24,24,27,.94);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);
+    border:1px solid var(--hair);border-radius:999px;transition:transform .35s cubic-bezier(.2,.8,.2,1);
+    white-space:nowrap;
+  }
+  #selbar.on{transform:translate(-50%,0)}
+  #selbar button:hover{color:var(--paper)}
+  #selbar .count{color:var(--paper)}
+
+  #toast{
+    position:fixed;left:50%;bottom:22px;transform:translate(-50%,140%);z-index:70;
+    display:flex;gap:18px;align-items:center;padding:12px 20px;
+    background:var(--paper);color:var(--ink);border-radius:999px;transition:transform .35s cubic-bezier(.2,.8,.2,1);
+  }
+  #toast.on{transform:translate(-50%,0)}
+  #toast .label{color:var(--ink)}
+  #toast button{text-decoration:underline;text-underline-offset:3px}
+
+  /* ---------- viewer ---------- */
+  #lb{
+    position:fixed;inset:0;z-index:100;background:rgba(6,6,7,.975);
+    display:none;place-items:center;
+    -webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);
+  }
+  #lb.on{display:grid}
+  #lb img,#lb video{max-width:88vw;max-height:80vh;object-fit:contain}
+  #lb .foot{position:fixed;left:0;right:0;bottom:22px;display:flex;justify-content:center;gap:26px;align-items:baseline;padding:0 20px;flex-wrap:wrap}
+  #lb .foot button:hover{color:var(--paper)}
+  #lb .fname{color:var(--faint);max-width:40vw;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  #lb .x{position:fixed;top:20px;right:max(20px,4vw);padding:8px}
+  #lb .nav{position:fixed;top:60px;bottom:70px;width:24vw}
+  #lb .nav.p{left:0;cursor:w-resize}
+  #lb .nav.n{right:0;cursor:e-resize}
+  kbd{font:inherit;color:var(--faint);margin-left:6px}
+
+  @media (max-width:760px){
+    :root{--gap:6px}
+    .controls{gap:14px 18px}
+    .spacer{display:none}
+    #lb img,#lb video{max-width:100vw}
+    kbd{display:none}
+  }
+  @media (prefers-reduced-motion:reduce){ .tile img,.tile video{opacity:1;transition:none} }
+
+  /* ---------- the public copy: view only ---------- */
+  html.view .work,html.view .tools,html.view #selbar,html.view #toast,html.view #lbAct,
+  html.view [data-tab="archive"],html.view #byColour,html.view #undo,html.view #exportBtn,
+  html.view #importLbl,html.view #importIn,html.view label:has(#importIn){display:none!important}
+  html.view .tile{cursor:zoom-in}
+</style>
+</head>
+<body>
+<div id="bar"></div>
+
+<header class="cover">
+  <div class="topline">
+    <span class="label">Greta Garbo &nbsp;·&nbsp; Creative Board &nbsp;·&nbsp; Cara Stricker</span>
+    <span class="label"><a class="label" href="approach.html">Approach →</a> <span class="work">&nbsp;&nbsp; <a class="label" href="../garbo-dps/index.html">Cinematographers →</a> &nbsp;&nbsp; <a class="label" href="../garbo-casting/index.html">Casting →</a></span></span>
+  </div>
+</header>
+
+<nav class="controls label" id="controls">
+  <div class="group">
+    <button class="tab on" data-tab="board">Board<span class="n" id="nBoard"></span></button>
+    <button class="tab" data-tab="archive">Archive<span class="n" id="nArch"></span></button>
+  </div>
+  <span class="sep"></span>
+  <div class="group">
+    <button data-view="rows" class="on">Rows</button>
+    <button data-view="grid">Grid</button>
+  </div>
+  <span class="sep"></span>
+  <div class="group">
+    <button data-size="s">S</button>
+    <button data-size="m" class="on">M</button>
+    <button data-size="l">L</button>
+  </div>
+  <span class="spacer"></span>
+  <div class="group">
+    <button id="byColour">Arrange by colour</button>
+    <button id="undo" disabled>Undo<kbd>⌘Z</kbd></button>
+    <button id="exportBtn">Save arrangement</button>
+    <label style="cursor:pointer" class="label"><span id="importLbl">Load</span><input type="file" id="importIn" accept=".json" hidden></label>
+    <button id="pdf">PDF</button>
+  </div>
+  <div class="strip" id="strip" title="Jump to a plate"><span id="stripWin"></span></div>
+</nav>
+
+<main><div id="board"></div></main>
+<div id="drop"></div>
+
+<div id="selbar" class="label">
+  <span class="count" id="selCount"></span>
+  <button data-bulk="start">Move to start</button>
+  <button data-bulk="down" id="bulkDown">Further down</button>
+  <button data-bulk="end">Move to end</button>
+  <button data-bulk="archive" id="bulkMain">Archive</button>
+  <button data-bulk="clear">Clear</button>
+</div>
+<div id="toast"><span class="label" id="toastMsg"></span><button class="label" id="toastUndo">Undo</button></div>
+
+<div id="lb" role="dialog" aria-modal="true" aria-label="Plate viewer">
+  <button class="nav p" aria-label="Previous"></button>
+  <img alt="">
+  <video muted loop playsinline autoplay hidden></video>
+  <button class="nav n" aria-label="Next"></button>
+  <button class="x label" aria-label="Close">Close<kbd>esc</kbd></button>
+  <div class="foot label">
+    <span id="lbn"></span>
+    <span class="fname" id="lbf"></span>
+    <button id="lbAct">Archive<kbd>A</kbd></button>
+  </div>
+</div>
+
+<script src="view.js"></script>
+<script>if (window.GARBO_VIEW) document.documentElement.classList.add("view");</script>
+<script src="items.js"></script>
+<script src="print.js"></script>
+<script src="board.js"></script>
+</body>
+</html>
