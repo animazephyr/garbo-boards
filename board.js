@@ -162,6 +162,8 @@
     if (DISK) fetch("api/board", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(st), keepalive: true }).catch(function () {});
   }
   function loadPrefs() {
+    // the public copy always opens small, whatever a viewer chose last time
+    if (VIEW) return { view: "rows", size: "s" };
     var p = null;
     try { p = JSON.parse(localStorage.getItem(PREFS)); } catch (e) {}
     return p || { view: "rows", size: "m" };
