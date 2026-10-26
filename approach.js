@@ -891,7 +891,8 @@
   // the file on disk is the record: it wins over whatever the browser kept;
   // the public copy reads the snapshot published beside it
   if (DISK || VIEW) {
-    fetch(VIEW ? "approach-save.json" : "api/state").then(function (r) { return r.ok ? r.json() : null; }).then(function (d) {
+    // never a cached copy: the public site must show the latest save
+    fetch(VIEW ? "approach-save.json?t=" + Date.now() : "api/state", { cache: "no-store" }).then(function (r) { return r.ok ? r.json() : null; }).then(function (d) {
       if (d && Array.isArray(d.scenes)) {
         st = d;
         st.uploads = st.uploads || {};

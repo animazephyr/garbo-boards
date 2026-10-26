@@ -102,7 +102,7 @@
     // read once, before the first paint, so the board never flashes another order
     try {
       var x = new XMLHttpRequest();
-      x.open("GET", VIEW ? "board-save.json" : "api/board", false);
+      x.open("GET", VIEW ? "board-save.json?t=" + Date.now() : "api/board", false);
       x.send();
       if (x.status === 200) return JSON.parse(x.responseText);
     } catch (e) {}
