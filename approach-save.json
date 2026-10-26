@@ -1,13 +1,13 @@
 {
  "title": "Flash fantasies",
- "intro": "Four Flash Fantasies reimagined through wider, locked-off compositions - simpler, stiller, more psychologically charged images that reveal a deeper layer of Garbo’s emotional experience.\n\nConsider further where these moments come in, whether they can perhaps punctuate sections and chapters. ",
+ "intro": "Four Flash Fantasies reimagined through wider, locked-off compositions - simpler, stiller, more psychologically charged images that reveal a deeper layer of Garbo’s emotional experience. Consider further where these moments come in, whether they can perhaps punctuate sections and chapters. ",
  "scenes": [
   {
    "id": "s54",
    "num": "54",
    "kind": "Flash fantasy",
    "title": "SCULPTING",
-   "note": "The sculpting fantasy feels tonally different from those before and after it. Consider reimagining it through a single, locked-off, wide composition — something more simple, refined and psychologically charged than the current close-up approach.  Suggestions below.",
+   "note": "The sculpting fantasy feels tonally different from those before and after it. Consider reimagining it through a single, locked-off, wide composition - something more simple, refined and psychologically charged than the current close-up approach.  Suggestions below.",
    "set": "",
    "setNote": "BROAD VISUAL REFERENCES – APPROACH - WIDE, LOCKED-OFF",
    "shots": [
@@ -58,7 +58,7 @@
    "num": "71",
    "kind": "Flash fantasy",
    "title": "Isolation",
-   "note": "The Mimi kiss may be unnecessary here. Perhaps this section could instead explore Garbo’s isolation, building on the bold, poetic visual language of the earlier fantasies through wider, evocative compositions. Aim for simple yet powerful, surreal and psychologically charged imagery that reveals a deeper layer of her emotional experience. Re-consider further where these moments come in to punctuate the chapter. ",
+   "note": "The Mimi kiss may be unnecessary here. Perhaps this fantasy could instead explore Garbo’s isolation, building on the bold, poetic visual language of the earlier fantasies through wider, evocative compositions. Aim for simple yet powerful, surreal and psychologically charged imagery that reveals a deeper layer of her emotional experience. Re-consider further where these moments come in to punctuate the chapter. ",
    "set": "",
    "setNote": "BROAD VISUAL REFERENCES – APPROACH - WIDE, LOCKED-OFF",
    "shots": [
@@ -114,8 +114,17 @@
      "id": "s116-1"
     },
     {
+     "title": "Young Garbo and young Mimi running across a landscape",
+     "text": "The two run together through an open landscape in Sweden, until Garbo gradually peels away and Mimi continues running on alone.  Wide tracking shot. ",
+     "imgs": [
+      "296",
+      "494"
+     ],
+     "id": "s116-4"
+    },
+    {
      "title": "Garbo watching Mimi float behind her",
-     "text": "A wide, still image from behind Garbo’s in an old Stockholm street, Mimi suspended or drifting behind her, either untethered or connected by a rope. An oneiric image of attachment, distance and memory. Locked off wide.",
+     "text": "A wide, still image from behind Garbo’s in an old Stockholm street, Mimi suspended or drifting behind her, either untethered or connected by a rope. Locked off wide.",
      "imgs": [
       "x-12f80f0e4a",
       "x-a642e2a4dd",
@@ -124,15 +133,6 @@
       "u-mvohfb08nsmg"
      ],
      "id": "s116-5"
-    },
-    {
-     "title": "Young Garbo and young Mimi running across a landscape",
-     "text": "The two run together through an open landscape in Sweden, until Garbo gradually peels away and Mimi continues running on alone.  Wide tracking shot. ",
-     "imgs": [
-      "296",
-      "494"
-     ],
-     "id": "s116-4"
     },
     {
      "id": "s116-mvohbqqz6ztc",
@@ -144,7 +144,7 @@
     },
     {
      "title": "Wind violent wind between Garbo and Mimi ",
-     "text": "Garbo and Mimi held apart in a wide frame in Stockholm, a violent wind moving past them.  Wide, locked off  composition. ",
+     "text": "Garbo and Mimi in a wide frame in Stockholm, a violent wind moving past them.  Wide, locked off  composition. ",
      "imgs": [
       "x-838a0a9768"
      ],
@@ -158,7 +158,7 @@
    "num": "119–122",
    "kind": "Flash fantasy",
    "title": "Letting Go of Identity",
-   "note": "Consider removing the current flash fantasy — the mirror maze, explanatory V.O. and younger-self flashback. The themes of masks are already beautifully woven throughout the film. Perhaps reimagine this moment through something more surreal, simple and evocative, using wider, compositions. Imagery of fire, water, wind or physical destruction could capture the dissolution of identity.",
+   "note": "Consider removing the current flash fantasy - the mirror maze, explanatory V.O. and younger-self flashback. The themes of masks are already beautifully woven throughout the film. Perhaps reimagine this moment through something more surreal, simple and evocative, using wider, compositions. Imagery of fire, water, wind or physical destruction could capture the dissolution of identity.",
    "set": "",
    "setNote": "BROAD VISUAL REFERENCES BELOW - APPROACH - WIDE, LOCKED-OFF",
    "shots": [
@@ -206,7 +206,7 @@
     },
     {
      "id": "s119-mvoe91bfr8oe",
-     "title": "BARN FIRE.",
+     "title": "STRUCTURE FIRE",
      "text": "A wide, locked-off image of Garbo standing still, watching a structure engulfed in flames",
      "imgs": [
       "x-e350e5987e",
