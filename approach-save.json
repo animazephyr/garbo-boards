@@ -92,14 +92,6 @@
       "090"
      ],
      "id": "s71-2"
-    },
-    {
-     "title": "CALIFORNIA STREET - RIPPLING",
-     "text": "Garbo stands alone on a California street. A seemingly ordinary, still composition until a single drop of water disturbs the image, sending ripples across the entire street and revealing that what we have been watching is a reflection.",
-     "imgs": [
-      "332"
-     ],
-     "id": "s71-3"
     }
    ],
    "refs": []
@@ -134,14 +126,6 @@
      "id": "s116-5"
     },
     {
-     "id": "s116-mvohbqqz6ztc",
-     "title": "MIMI INFRONT OF RAVAGING WAVES",
-     "text": "Mimi alone in front of violent waves, small against the scale of the sea.",
-     "imgs": [
-      "u-mvohcn6e7qoc"
-     ]
-    },
-    {
      "title": "Young Garbo and young Mimi running across a landscape",
      "text": "The two run together through an open landscape in Sweden, until Garbo gradually peels away and Mimi continues running on alone.  Wide tracking shot. ",
      "imgs": [
@@ -149,6 +133,14 @@
       "494"
      ],
      "id": "s116-4"
+    },
+    {
+     "id": "s116-mvohbqqz6ztc",
+     "title": "MIMI INFRONT OF RAVAGING WAVES",
+     "text": "Mimi alone in front of violent waves, small against the scale of the sea.",
+     "imgs": [
+      "u-mvohcn6e7qoc"
+     ]
     },
     {
      "title": "Wind violent wind between Garbo and Mimi ",
